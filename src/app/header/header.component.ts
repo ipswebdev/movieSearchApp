@@ -8,19 +8,10 @@ import { searchService } from '../searches-data.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  messageString : string;
   constructor(private service : searchService) { }
 
   ngOnInit() {
     
-  }
-  receive(){
-    this.service.receiveData().subscribe(
-      message => {
-        console.log(message);
-        this.messageString = message;
-      }
-    )    
   }
 
 }

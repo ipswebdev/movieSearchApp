@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { searchService } from "../searches-data.service";
-import { Result } from "../result";
-import { ResultDetails } from "../result-details";
 
 @Component({
   selector: 'app-result-body',
@@ -23,7 +21,7 @@ getMovie(title){
   this.isLoading = true;
   this.searchservices.getMovie(title).subscribe(
     (movie) => {
-      this.isLoading=true;
+      this.isLoading=false;
       if(movie.Title){
       this.isSearchValid = false;
       console.log('subscribe fn ran!')
