@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container{
+    max-width: 920px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+.footer{
+position: absolute;
+right: 0;
+left: 0;
+}
+.post-footer,.pre-footer{
+    padding:0 2rem;
+    max-width: 100%;
+    background-color: rgb(94, 93, 93);
+    color: ivory;
+    display: flex;
+    &__item{
+        padding: 0.25rem 0;
+        border-right:1px solid grey;
+        &:last-child{
+            border: none;
+        }
+    }
+}

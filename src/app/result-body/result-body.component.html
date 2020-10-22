@@ -1,0 +1,28 @@
+<!-- <button class="btn btn-danger"(click)="transmit()">send</button>
+{{messaageString}} -->
+<input type="text" class="form-control" [(ngModel)]="title"  (keyup.enter)="getMovie(title)">
+<button class="btn btn-success" (click)="getMovie(title)" [disabled]="title===''">Get Info!</button>
+<div *ngIf="isLoading">Searching for the movie... </div>
+<div *ngIf="!isSearchValid && movieObj">{{movieObj.Error}}</div>
+<div *ngIf="movieObj">
+    <div>
+        <img src="{{movieObj.Poster}}" alt="">
+        <div>Movie Title : {{movieObj.Title}}</div>
+        <div>Directors : {{movieObj.Director}}</div>
+        <div>Actors : {{movieObj.Actors}}</div>
+        <div>Movie Year : {{movieObj.Year}}</div>
+        <div *ngIf="movieObj.Ratings">Movie Rating
+        <ul>
+            <li *ngFor="let item of movieObj.Ratings">
+                {{item.Source}} : {{item.Value}}
+            </li>
+        </ul>
+        </div>
+        <div>Plot : {{movieObj.Plot}}</div>
+    </div>
+</div>
+<div *ngIf="!movieObj">
+    <div>
+        No Movie Searched
+    </div>
+</div>
