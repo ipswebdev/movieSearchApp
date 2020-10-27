@@ -7,10 +7,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 export class searchService {
    movie;
-   constructor(private http : HttpClient){}
+   recentSearches = [];
+   constructor(private http : HttpClient){
+       console.log(this.recentSearches);
+   }
    getMovie(title,searchBy,searchType){
        let parameter = new HttpParams();
        parameter = parameter.set('apikey','5dca3b0c');
+    //    parameter = parameter.set('plot','full');
        if(searchBy === 'title'){
         parameter = parameter.set('t',title);
        }
