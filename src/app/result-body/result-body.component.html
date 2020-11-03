@@ -1,28 +1,52 @@
-<!-- <button class="btn btn-danger"(click)="transmit()">send</button>
-{{messaageString}} -->
-<input type="text" class="form-control" [(ngModel)]="title"  (keyup.enter)="getMovie(title)">
-<button class="btn btn-success" (click)="getMovie(title)" [disabled]="title===''">Get Info!</button>
-<div *ngIf="isLoading">Searching for the movie... </div>
-<div *ngIf="!isSearchValid && movieObj">{{movieObj.Error}}</div>
-<div *ngIf="movieObj">
-    <div>
-        <img src="{{movieObj.Poster}}" alt="">
-        <div>Movie Title : {{movieObj.Title}}</div>
-        <div>Directors : {{movieObj.Director}}</div>
-        <div>Actors : {{movieObj.Actors}}</div>
-        <div>Movie Year : {{movieObj.Year}}</div>
-        <div *ngIf="movieObj.Ratings">Movie Rating
-        <ul>
-            <li *ngFor="let item of movieObj.Ratings">
-                {{item.Source}} : {{item.Value}}
-            </li>
-        </ul>
-        </div>
-        <div>Plot : {{movieObj.Plot}}</div>
+<div style="margin: 0 auto; padding:1rem 2.75rem;max-width: 750px;display: flex;justify-content: center;align-items: center;flex-direction: column;">
+   <div class="search">
+    <input type="text" class="search--box" [(ngModel)]="title"  (keyup.enter)="getMovie(title);">
+    <button class="search--btn" (click)="getMovie(title)" [disabled]="title ===''">Search</button>
+    <div class="search--suggestions" *ngIf="showSuggestion && title && recentSearches.length">
+        <div *ngFor="let item of recentSearches;let i=index" (click)="setTitle(recentSearches[i])" >
+            {{item}}
+        </div>     
     </div>
-</div>
-<div *ngIf="!movieObj">
-    <div>
-        No Movie Searched
+    </div> 
+    <div class="mar-b10">
+        Search using :
+        <label for="title">
+            Title
+        </label>
+        <input type="radio" name="searchBy" id="title" value="title" [(ngModel)]="searchBy">
+        <label for="id">
+            IMDB ID
+        </label>
+        <input type="radio" name="searchBy" id="id" value="id" [(ngModel)]="searchBy">
+    </div>
+    <div  class="mar-b10">
+        <label for="type">
+            Type:
+        </label>
+        <input type="radio" name="type" value="movie" id="type" [(ngModel)]="searchType">
+        <span>Movie</span>
+        <input type="radio" name="type" value="series" id="type" [(ngModel)]="searchType">
+        <span>Series</span>
+
+    </div>
+    <div *ngIf="isLoading">Searching for the movie... </div>
+    <div *ngIf="!isSearchValid && movieObj">{{movieObj.Error}}</div>
+    <div *ngIf="movieObj" style=" display:flex;justify-content: center;border: 1px solid gray; padding:1.25rem; border-radius: 1rem;">
+        
+            <img src="{{movieObj.Poster}}" alt="" style="margin-right: 1rem;width:100% ;max-width:220px;height: 100%;max-height: 250px;">
+            <div style="flex: 1;padding-left: 1rem;">
+                <div>Movie Title : {{movieObj.Title}}</div>
+                <div>Directors : {{movieObj.Director}}</div>
+                <div>Actors : {{movieObj.Actors}}</div>
+                <div>Movie Year : {{movieObj.Year}}</div>
+                <div *ngIf="movieObj.Ratings">Movie Rating
+                <ul>
+                    <li *ngFor="let item of movieObj.Ratings">
+                        {{item.Source}} : {{item.Value}}
+                    </li>
+                </ul>
+                </div>
+                <div>Plot : {{movieObj.Plot}}</div>
+            </div>
     </div>
 </div>
