@@ -14,7 +14,7 @@ export class searchService {
    getMovie(title,searchBy,searchType){
        let parameter = new HttpParams();
        parameter = parameter.set('apikey','5dca3b0c');
-    //    parameter = parameter.set('plot','full');
+       parameter = parameter.set('plot','full');
        if(searchBy === 'title'){
         parameter = parameter.set('t',title);
        }

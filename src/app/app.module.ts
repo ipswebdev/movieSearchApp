@@ -8,14 +8,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { ResultBodyComponent } from './result-body/result-body.component';
-import { CardComponent } from './result-body/card/card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    ResultBodyComponent,
-    CardComponent
+    ResultBodyComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { searchService } from "../searches-data.service";
+import { searchService } from "../services/searches-data.service";
+import { DataStorage } from '../services/data-storage.service';
+import { Movie } from './models/movie.model';
+
 
 @Component({
   selector: 'app-result-body',
@@ -8,7 +11,7 @@ import { searchService } from "../searches-data.service";
 })
 export class ResultBodyComponent implements OnInit{
 
-constructor(private searchservices : searchService){}
+constructor(private searchservices : searchService, private dataStorage : DataStorage){}
 isLoading =false;
 showSuggestion :boolean = true;
 isSearchValid = false;
@@ -64,5 +67,19 @@ setTitle(selectedTitle){
   this.title = selectedTitle;
   console.log('selected title is ');
   this.showSuggestion = false;
+}
+addMovie(){
+  const movie :Movie = {
+    title : this.movieObj.Title,
+    releaseYear : this.movieObj.Released,
+    ratings : this.movieObj.Rated,
+    poster :  this.movieObj.Poster ,
+    actors : this.movieObj.Actors,
+    directors : this.movieObj.Director,
+    plot : this.movieObj.plot
+  }
+  this.dataStorage.addMovie(movie).subscribe((data) => {
+    console.log('Susseccfull post',data)
+});
 }
 }

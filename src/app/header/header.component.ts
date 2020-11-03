@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { searchService } from '../searches-data.service';
+import { searchService } from '../services/searches-data.service';
 
 @Component({
   selector: 'app-header',

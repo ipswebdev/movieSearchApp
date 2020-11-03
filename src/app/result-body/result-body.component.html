@@ -32,7 +32,7 @@
     <div *ngIf="isLoading">Searching for the movie... </div>
     <div *ngIf="!isSearchValid && movieObj">{{movieObj.Error}}</div>
     <div *ngIf="movieObj" style=" display:flex;justify-content: center;border: 1px solid gray; padding:1.25rem; border-radius: 1rem;">
-        
+            <button style="float: right;" (click)="addMovie()">Add to Faves!</button>
             <img src="{{movieObj.Poster}}" alt="" style="margin-right: 1rem;width:100% ;max-width:220px;height: 100%;max-height: 250px;">
             <div style="flex: 1;padding-left: 1rem;">
                 <div>Movie Title : {{movieObj.Title}}</div>
