@@ -16,5 +16,8 @@ export class DataStorage {
         return this.http.post('https://movie-search-app-88ca4.firebaseio.com/movies.json',movie);
        
     }
+    fetchAllMovies(){
+        return this.http.get('https://movie-search-app-88ca4.firebaseio.com/movies.json');
+    }
 
 }

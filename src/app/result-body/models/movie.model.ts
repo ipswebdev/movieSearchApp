@@ -7,7 +7,7 @@ export class Movie{
         public actors : string,
         public releaseYear : string,
         public poster : string,
-        private id ?: string,
+        public id ?: string,
     ){}
     
 }

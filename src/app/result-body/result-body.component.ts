@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { searchService } from "../services/searches-data.service";
 import { DataStorage } from '../services/data-storage.service';
 import { Movie } from './models/movie.model';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -23,7 +24,27 @@ recentSearches = [];
 titleExists :boolean = false;
 ngOnInit(){
   this.recentSearches = this.searchservices.recentSearches;
-  console.log(this.recentSearches)
+  console.log(this.recentSearches);
+  this.dataStorage.fetchAllMovies().subscribe(
+    (movies:Movie) => {
+      this.searchservices.myFaves.length = 0;
+      console.log('fetched result is',movies);
+      if(movies){
+        for (const key in movies) {
+          if(movies.hasOwnProperty(key)){
+            this.searchservices.myFaves.push(movies[key]);
+          }
+        }
+      }
+      else {
+        console.log('no movie on the list');
+      }
+      console.log(this.searchservices.myFaves.slice());
+    }
+  ),
+  (error) => {
+    console.log(error);
+  }
 }
 getMovie(title){
   this.isLoading = true;
@@ -44,6 +65,7 @@ getMovie(title){
         if(title === movie.Title){
         return true;
         }
+        return false;
       })
       console.log(this.titleExists);
       // if(this.titleExists){
@@ -68,6 +90,7 @@ setTitle(selectedTitle){
   console.log('selected title is ');
   this.showSuggestion = false;
 }
+
 addMovie(){
   const movie :Movie = {
     title : this.movieObj.Title,
@@ -76,10 +99,37 @@ addMovie(){
     poster :  this.movieObj.Poster ,
     actors : this.movieObj.Actors,
     directors : this.movieObj.Director,
-    plot : this.movieObj.plot
+    plot : this.movieObj.plot,
+    id : ''
   }
-  this.dataStorage.addMovie(movie).subscribe((data) => {
-    console.log('Susseccfull post',data)
+  this.dataStorage.addMovie(movie)
+  .pipe(map(
+    (obj) => {
+      for (const key in obj) {
+        console.log('key is',obj)
+        console.log('key is',obj[key])
+        return obj[key];
+      }
+    }
+  ))
+  .subscribe(
+    (response) => {
+   movie.id = response;
+   this.searchservices.myFaves.push(movie);
+   console.log(this.searchservices.myFaves.slice())
 });
+}
+
+markFaveCheck(movie){
+  let doesMovieAlreadyExist = this.searchservices.myFaves.find((movieObj) => {
+    if(movieObj.title === movie.title){
+      return true;
+    }
+    return false;
+  });
+  if(doesMovieAlreadyExist){
+    return !doesMovieAlreadyExist;
+  }
+  return !doesMovieAlreadyExist;
 }
 }
