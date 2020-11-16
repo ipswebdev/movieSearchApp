@@ -1,7 +1,7 @@
 <div style="margin: 0 auto; padding:1rem 2.75rem;max-width: 750px;display: flex;justify-content: center;align-items: center;flex-direction: column;">
    <div class="search">
     <input type="text" class="search--box" [(ngModel)]="title"  (keyup.enter)="getMovie(title);">
-    <button class="search--btn" (click)="getMovie(title)" [disabled]="title ===''">Search</button>
+    <button class="btn btn--search" (click)="getMovie(title)" [disabled]="title ===''">Search</button>
     <div class="search--suggestions" *ngIf="showSuggestion && title && recentSearches.length">
         <div *ngFor="let item of recentSearches;let i=index" (click)="setTitle(recentSearches[i])" >
             {{item}}
@@ -19,7 +19,7 @@
         </label>
         <input type="radio" name="searchBy" id="id" value="id" [(ngModel)]="searchBy">
     </div>
-    <div  class="mar-b10">
+    <div  class="mar-b20">
         <label for="type">
             Type:
         </label>
@@ -31,10 +31,13 @@
     </div>
     <div *ngIf="isLoading">Searching for the movie... </div>
     <div *ngIf="!isSearchValid && movieObj">{{movieObj.Error}}</div>
-    <div *ngIf="movieObj" style=" display:flex;justify-content: center;border: 1px solid gray; padding:1.25rem; border-radius: 1rem;">
-            <button style="float: right;" (click)="addMovie()">Add to Faves!</button>
-            <img src="{{movieObj.Poster}}" alt="" style="margin-right: 1rem;width:100% ;max-width:220px;height: 100%;max-height: 250px;">
-            <div style="flex: 1;padding-left: 1rem;">
+    <div *ngIf="movieObj" class="ui-card">
+        <div style="text-align: right;margin-bottom: 1rem;">
+            <button class="btn" (click)="addMovie()">Add to Faves!</button>
+        </div>
+        <div class="d-flex-center">
+            <img src="{{movieObj.Poster}}" alt="" class="ui-card__img">
+            <div class="ui-card__content">
                 <div>Movie Title : {{movieObj.Title}}</div>
                 <div>Directors : {{movieObj.Director}}</div>
                 <div>Actors : {{movieObj.Actors}}</div>
@@ -48,5 +51,6 @@
                 </div>
                 <div>Plot : {{movieObj.Plot}}</div>
             </div>
+        </div>
     </div>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { searchService } from "../services/searches-data.service";
+import { searchService } from '../services/searches-data.service';
 import { DataStorage } from '../services/data-storage.service';
 import { Movie } from './models/movie.model';
 import { map } from 'rxjs/operators';
@@ -10,105 +10,109 @@ import { map } from 'rxjs/operators';
   templateUrl: './result-body.component.html',
   styleUrls: ['./result-body.component.scss']
 })
-export class ResultBodyComponent implements OnInit{
+export class ResultBodyComponent implements OnInit {
 
-constructor(private searchservices : searchService, private dataStorage : DataStorage){}
-isLoading =false;
-showSuggestion :boolean = true;
+constructor(private searchservices: searchService, private dataStorage: DataStorage) {}
+isLoading = false;
+showSuggestion = true;
 isSearchValid = false;
-title ='';
+title = '';
 searchType = ''  || 'movie';
 searchBy = '' || 'title';
 movieObj;
 recentSearches = [];
-titleExists :boolean = false;
-ngOnInit(){
+titleExists = false;
+ngOnInit() {
   this.recentSearches = this.searchservices.recentSearches;
-  console.log(this.recentSearches);
+  console.log('recent serches value', this.recentSearches);
   this.dataStorage.fetchAllMovies().subscribe(
-    (movies:Movie) => {
+    (movies: Movie) => {
       this.searchservices.myFaves.length = 0;
-      console.log('fetched result is',movies);
-      if(movies){
+      console.log('fetched result is', movies);
+      if (movies) {
         for (const key in movies) {
-          if(movies.hasOwnProperty(key)){
+          if (movies.hasOwnProperty(key)) {
             this.searchservices.myFaves.push(movies[key]);
           }
         }
-      }
-      else {
+      } else {
         console.log('no movie on the list');
       }
-      console.log(this.searchservices.myFaves.slice());
+      console.log(' faves list of movies..ng init fn', this.searchservices.myFaves.slice());
     }
   ),
+  // tslint:disable-next-line: no-unused-expression
   (error) => {
     console.log(error);
   }
 }
-getMovie(title){
+getMovie(title) {
   this.isLoading = true;
-  this.showSuggestion = false
-  this.searchservices.getMovie(title,this.searchBy,this.searchType).subscribe(
+  this.showSuggestion = false;
+  this.searchservices.getMovie(title, this.searchBy, this.searchType).subscribe(
     (movie) => {
-      this.isLoading=false;
-      if(movie.Title){
+      this.isLoading = false;
+      if (movie.Title) {
       this.isSearchValid = false;
-      console.log('subscribe fn ran!')
+      console.log('subscribe fn ran!');
       console.log(movie);
       this.movieObj = movie;
-      if(this.movieObj.Poster === 'N/A' ){
-        this.movieObj.Poster = '/assets/images/no-img.png'    
+      if (this.movieObj.Poster === 'N/A' ) {
+        this.movieObj.Poster = '/assets/images/no-img.png';
       }
 
-      this.titleExists=this.recentSearches.find(title => {
-        if(title === movie.Title){
+      this.titleExists = this.recentSearches.find(title => {
+        if (title === movie.Title) {
         return true;
         }
         return false;
-      })
+      });
       console.log(this.titleExists);
       // if(this.titleExists){
-        this.searchservices.recentSearches.push(movie.Title);
-      // }   
-      }
-      else{
+      this.searchservices.recentSearches.push(movie.Title);
+      console.log(this.titleExists);
+      // }
+      } else {
         this.movieObj = null;
         this.isSearchValid = false ;
-        alert(movie.Error)
+        alert(movie.Error);
       }
-      this.showSuggestion =true;
+      this.showSuggestion = true;
     },
     (err) => {
-      console.log('to err is human! error is ',err)
+      console.log('to err is human! error is ', err);
     }
     );
   this.title = '';
 }
-setTitle(selectedTitle){
+
+setTitle(selectedTitle) {
   this.title = selectedTitle;
   console.log('selected title is ');
   this.showSuggestion = false;
 }
 
-addMovie(){
-  const movie :Movie = {
+addMovie() {
+  const movie: Movie = {
     title : this.movieObj.Title,
     releaseYear : this.movieObj.Released,
     ratings : this.movieObj.Rated,
     poster :  this.movieObj.Poster ,
     actors : this.movieObj.Actors,
     directors : this.movieObj.Director,
-    plot : this.movieObj.plot,
+    plot : this.movieObj.Plot,
     id : ''
-  }
+  };
+  this.isMovieFave(movie);
   this.dataStorage.addMovie(movie)
   .pipe(map(
     (obj) => {
       for (const key in obj) {
-        console.log('key is',obj)
-        console.log('key is',obj[key])
-        return obj[key];
+        if (obj.hasOwnProperty(key)) {
+          console.log('key is', obj);
+          console.log('key is', obj[key]);
+          return obj[key];
+        }
       }
     }
   ))
@@ -116,20 +120,23 @@ addMovie(){
     (response) => {
    movie.id = response;
    this.searchservices.myFaves.push(movie);
-   console.log(this.searchservices.myFaves.slice())
+   console.log(this.searchservices.myFaves.slice());
 });
 }
 
-markFaveCheck(movie){
-  let doesMovieAlreadyExist = this.searchservices.myFaves.find((movieObj) => {
-    if(movieObj.title === movie.title){
-      return true;
-    }
-    return false;
-  });
-  if(doesMovieAlreadyExist){
-    return !doesMovieAlreadyExist;
+isMovieFave(movie) {
+  // tslint:disable-next-line: forin
+  for (const key in movie) {
+    console.log(`key is ${key} --> ${movie[key]} `);
   }
-  return !doesMovieAlreadyExist;
-}
+
+  console.log('movie title', movie.title);
+  console.log('movies Fave arr', this.searchservices.myFaves);
+  let isFave =  this.searchservices.myFaves.includes(movie.title);
+  console.log('is movie favourite value', isFave);
+  if (isFave) {
+      return true;
+  }
+  return false;
+  }
 }
