@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { searchService } from '../services/searches-data.service';
+import { SearchService } from '../services/searches-data.service';
 import { DataStorage } from '../services/data-storage.service';
 import { Movie } from './models/movie.model';
 import { map } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
 })
 export class ResultBodyComponent implements OnInit {
 
-constructor(private searchservices: searchService, private dataStorage: DataStorage) {}
+constructor(private searchservices: SearchService, private dataStorage: DataStorage) {}
 isLoading = false;
 showSuggestion = true;
 isSearchValid = false;
@@ -22,23 +22,25 @@ searchBy = '' || 'title';
 movieObj;
 recentSearches = [];
 titleExists = false;
+switch = false;
+successfulAddition = false;
 ngOnInit() {
   this.recentSearches = this.searchservices.recentSearches;
   console.log('recent serches value', this.recentSearches);
   this.dataStorage.fetchAllMovies().subscribe(
     (movies: Movie) => {
-      this.searchservices.myFaves.length = 0;
+      this.dataStorage.myFaves.length = 0;
       console.log('fetched result is', movies);
       if (movies) {
         for (const key in movies) {
           if (movies.hasOwnProperty(key)) {
-            this.searchservices.myFaves.push(movies[key]);
+            this.dataStorage.myFaves.push(movies[key]);
           }
         }
       } else {
         console.log('no movie on the list');
       }
-      console.log(' faves list of movies..ng init fn', this.searchservices.myFaves.slice());
+      console.log(' faves list of movies..ng init fn', this.dataStorage.myFaves.slice());
     }
   ),
   // tslint:disable-next-line: no-unused-expression
@@ -61,17 +63,14 @@ getMovie(title) {
         this.movieObj.Poster = '/assets/images/no-img.png';
       }
 
+      // tslint:disable-next-line: no-shadowed-variable
       this.titleExists = this.recentSearches.find(title => {
         if (title === movie.Title) {
         return true;
         }
         return false;
       });
-      console.log(this.titleExists);
-      // if(this.titleExists){
       this.searchservices.recentSearches.push(movie.Title);
-      console.log(this.titleExists);
-      // }
       } else {
         this.movieObj = null;
         this.isSearchValid = false ;
@@ -103,14 +102,14 @@ addMovie() {
     plot : this.movieObj.Plot,
     id : ''
   };
-  this.isMovieFave(movie);
-  this.dataStorage.addMovie(movie)
+  if (!this.isMovieFave(movie)) {
+    this.dataStorage.addMovie(movie)
   .pipe(map(
     (obj) => {
       for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
-          console.log('key is', obj);
-          console.log('key is', obj[key]);
+          // console.log('key is', obj);
+          // console.log('key is', obj[key]);
           return obj[key];
         }
       }
@@ -119,24 +118,40 @@ addMovie() {
   .subscribe(
     (response) => {
    movie.id = response;
-   this.searchservices.myFaves.push(movie);
-   console.log(this.searchservices.myFaves.slice());
-});
+   this.dataStorage.myFaves.push(movie);
+   this.dataStorage.faveMovieAdded.next(1);
+   this.successfulAddition = true;
+   console.log('Added movie successfully to favourites', this.dataStorage.myFaves.slice());
+  },
+  error => {
+    console.log('sorry! couldnt add your movie to the faves list');
+    this.dataStorage.faveMovieAdded.next(0);
+    this.successfulAddition = true;
+  });
+} else {
+  this.successfulAddition = true;
+  console.log('Movie Already marked as Fave!');
+}
 }
 
 isMovieFave(movie) {
-  // tslint:disable-next-line: forin
-  for (const key in movie) {
-    console.log(`key is ${key} --> ${movie[key]} `);
+  let fave = null;
+  fave = this.dataStorage.myFaves.filter(obj => {
+    if (obj.title === this.movieObj.Title) {
+    return obj.title;
+    }
+    return null;
+  });
+  if (fave.length && (fave[0].title === this.movieObj.Title)) {
+    // console.log('is movie already present in array');
+    return true;
   }
-
-  console.log('movie title', movie.title);
-  console.log('movies Fave arr', this.searchservices.myFaves);
-  let isFave =  this.searchservices.myFaves.includes(movie.title);
-  console.log('is movie favourite value', isFave);
-  if (isFave) {
-      return true;
-  }
+  // console.log('is movie already present in array');
   return false;
-  }
 }
+
+}
+/* toggleSwitch(){
+    this.switch = !this.switch;
+  }
+*/

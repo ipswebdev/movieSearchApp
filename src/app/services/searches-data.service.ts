@@ -6,35 +6,33 @@ import { HttpClient, HttpParams } from '@angular/common/http';
     providedIn : 'root'
 })
 
-export class searchService {
+export class SearchService {
    movie;
    recentSearches = [];
-   myFaves = [];
-   constructor(private http : HttpClient){
+   constructor(private http: HttpClient) {
        console.log(this.recentSearches);
    }
-   
-   getMovie(title,searchBy,searchType){
+   getMovie(title, searchBy, searchType){
        let parameter = new HttpParams();
-       parameter = parameter.set('apikey','5dca3b0c');
-       parameter = parameter.set('plot','full');
-       if(searchBy === 'title'){
-        parameter = parameter.set('t',title);
+       parameter = parameter.set('apikey', '5dca3b0c');
+       parameter = parameter.set('plot', 'full');
+       if (searchBy === 'title')  {
+        parameter = parameter.set('t', title);
        }
-       if(searchBy === 'id'){
-        parameter = parameter.set('i',title);
-       } 
-       if (searchType === 'movie'){
-        parameter = parameter.set('type','movie');
+       if (searchBy === 'id') {
+        parameter = parameter.set('i', title);
        }
-       if (searchType === 'series'){
-        parameter = parameter.set('type','series');
+       if (searchType === 'movie') {
+        parameter = parameter.set('type', 'movie');
        }
-        this.movie = this.http.get('https://www.omdbapi.com/',
+       if (searchType === 'series') {
+        parameter = parameter.set('type', 'series');
+       }
+       this.movie = this.http.get('https://www.omdbapi.com/',
         {
-            params : parameter
+        params : parameter
         }
-        );
-        return this.movie;       
+       );
+       return this.movie;
    }
 }

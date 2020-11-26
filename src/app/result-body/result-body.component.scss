@@ -21,6 +21,15 @@
         background-color: gray;
         border-color: gray;
     }
+    &--success:disabled{
+        background-color: rgba(25, 255, 25, 0.5);
+        border-color:  rgba(25, 255, 25, 0.5);
+    }
+    img{
+        vertical-align: middle;
+        height: 25px;
+        width: 25px;
+    }
 }
 .search{
     display: flex;
@@ -90,3 +99,94 @@
         padding-left: 1rem;
     }
 }
+
+// .select-box{
+//     width: 100%;
+//     max-width: 250px;
+//     height: 45px;
+//     position: relative;
+//     padding: 6px 12px;
+//     select{
+//         appearance: none;
+//         border: 1px solid #4788f4;
+//         background-color: white;
+//         color: #4788f4;
+//         padding: 5px 23px 5px 8px;
+//         width: 100%;
+//         height: 100%;
+//         border-radius: 3px;
+//         border-bottom-width: 2px;
+//         outline: none;
+//         transition: all 0.2s ease-in;
+//         option{
+//             color: #000;
+//             background-color: #fff;
+//             &:hover{
+//                 background-color: #000;
+//                 color: red;
+//             }
+//         }
+//         &:focus{
+//             background-color:#4788f4;
+//             color: #fff;
+//             border-color:  #fff;
+//             ~ .select-box__icon{
+//                 border-color: #fff;   
+//             }
+//         }
+//     }
+//     &__icon{
+//         position: absolute;
+//         top: 18px;
+//         right: 18px;
+//         height: 0.65rem;
+//         width: 0.65rem;
+//         pointer-events: none;
+//         border-left: 3px solid #4788f4;
+//         border-bottom: 3px solid #4788f4;
+//         transform: rotate(-45deg);
+
+//     }
+// }
+
+// .toggle-switch{
+//     $color1:rgba(#4788f4,0.7);
+//     $color2:#4788f4;
+//     width: 60px;
+//     height: 30px;
+//     border-radius: 50px;
+//     border: 2px solid #e2e4e8;
+//     padding: 3px;
+//     position: relative;
+//     border-color: #4788f4;
+//     background:  rgba(#4788f4,0.1);
+//     &--sm{
+//     width: 30px;
+//     height: 15px;
+//         .toggle-switch__flipper{
+//             border-radius: 50%;
+//             width: 15px;
+//             height: 15px;
+//         }
+//     }
+//     &__flipper{
+//         position: absolute;
+//         border-radius: 50%;
+//         width: 28px;
+//         height: 28px;
+//         top: 50%;
+//         transform: translateY(-50%);
+//         border: 1px solid #4788f4;
+//         background:  radial-gradient($color1, $color2);
+//     }
+//     &--on{
+//         .toggle-switch__flipper{
+//             right: 3px;
+//         }
+//     }
+//     &--off{
+//         .toggle-switch__flipper{
+//             left: 3px;
+//         }
+//     }
+// }

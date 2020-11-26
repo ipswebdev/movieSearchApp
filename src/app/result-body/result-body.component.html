@@ -33,7 +33,8 @@
     <div *ngIf="!isSearchValid && movieObj">{{movieObj.Error}}</div>
     <div *ngIf="movieObj" class="ui-card">
         <div style="text-align: right;margin-bottom: 1rem;">
-            <button class="btn" (click)="addMovie()">Add to Faves!</button>
+            <button class="btn" (click)="addMovie()" [ngClass]="{'btn--success': successfulAddition}" [disabled]='successfulAddition'>
+                <img src="../../assets/images/favourite-icon.png" *ngIf="successfulAddition">{{successfulAddition ? 'Added' : 'Add' }} to Faves!</button>
         </div>
         <div class="d-flex-center">
             <img src="{{movieObj.Poster}}" alt="" class="ui-card__img">
@@ -54,3 +55,17 @@
         </div>
     </div>
 </div>
+
+<!-- <div class="select-box">
+    <select id="select-box">
+        <option value="Choose your Option here!" disabled selected>Choose your Option here!</option>
+        <option value="Choose your Option here!">Suzuki</option>
+        <option value="Choose your Option here!">Toyota</option>
+        <option value="Choose your Option here!">Maruti</option>
+    </select>
+    <div class="select-box__icon" ></div>
+</div> -->
+<!-- <div class="toggle-switch" (click)="toggleSwitch()" [ngClass]="{'toggle-switch--off': !switch,'toggle-switch--on':switch}">
+    <div class="toggle-switch__flipper">
+    </div>
+</div> -->

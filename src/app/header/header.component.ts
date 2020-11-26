@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { searchService } from '../services/searches-data.service';
+import { SearchService } from '../services/searches-data.service';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +8,7 @@ import { searchService } from '../services/searches-data.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  constructor(private service : searchService) { }
+  constructor(private service: SearchService) { }
 
   ngOnInit() {
     
