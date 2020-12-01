@@ -24,7 +24,10 @@ recentSearches = [];
 titleExists = false;
 switch = false;
 successfulAddition = false;
+isFaveMarked = true;
 ngOnInit() {
+  this.isFaveMarked = false;
+  this.successfulAddition = false;
   this.recentSearches = this.searchservices.recentSearches;
   console.log('recent serches value', this.recentSearches);
   this.dataStorage.fetchAllMovies().subscribe(
@@ -49,6 +52,8 @@ ngOnInit() {
   }
 }
 getMovie(title) {
+  this.isFaveMarked = false;
+  this.successfulAddition = false;
   this.isLoading = true;
   this.showSuggestion = false;
   this.searchservices.getMovie(title, this.searchBy, this.searchType).subscribe(
@@ -70,6 +75,16 @@ getMovie(title) {
         }
         return false;
       });
+      if (this.isMovieFave(this.movieObj)) {
+        this.isFaveMarked = true;
+        this.movieObj.isFave = true;
+        console.log('Fave status is ', this.isFaveMarked);
+      }
+      if (!this.isMovieFave(this.movieObj)) {
+        this.isFaveMarked = false;
+        this.movieObj.isFave = false;
+        console.log('Fave status is ', this.isFaveMarked);
+      }
       this.searchservices.recentSearches.push(movie.Title);
       } else {
         this.movieObj = null;
@@ -100,7 +115,8 @@ addMovie() {
     actors : this.movieObj.Actors,
     directors : this.movieObj.Director,
     plot : this.movieObj.Plot,
-    id : ''
+    id : '',
+    fave : true,
   };
   if (!this.isMovieFave(movie)) {
     this.dataStorage.addMovie(movie)
@@ -118,6 +134,7 @@ addMovie() {
   .subscribe(
     (response) => {
    movie.id = response;
+   movie.fave = true;
    this.dataStorage.myFaves.push(movie);
    this.dataStorage.faveMovieAdded.next(1);
    this.successfulAddition = true;
@@ -146,7 +163,7 @@ isMovieFave(movie) {
     // console.log('is movie already present in array');
     return true;
   }
-  // console.log('is movie already present in array');
+  // console.log('is movie NOT present in array');
   return false;
 }
 

@@ -8,5 +8,6 @@ export class Movie{
         public releaseYear: string,
         public poster: string,
         public id ?: string,
+        public fave ?: boolean
     ){}
 }
