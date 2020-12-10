@@ -55,6 +55,24 @@
         </div>
     </div>
 </div>
+<!-- 
+  UI Components 
+    <div class="accordion" *ngFor="let item of [1,2,3,4,5]">
+        <input type="checkbox" name="" id="check{{item}}">
+        <label for="check{{item}}">Test Label</label>
+        <div class="accordion-content">
+            This is content to be hidden initially
+            <div>
+                <div class="accordion" *ngFor="let item of [a,b,c,d,e]">
+                <input type="checkbox" name="" id="check{{item}}">
+                <label for="check{{item}}">Test Label</label>
+                <div class="accordion-content">
+                    This is content to be hidden initially
+                </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
 
 <!-- <div class="select-box">
     <select id="select-box">
@@ -69,3 +87,11 @@
     <div class="toggle-switch__flipper">
     </div>
 </div> -->
+   <!--  <div class="typing-box"  [ngClass]="{'typing-box--text-input': text}" >
+        <input type="text" class="typing-box__input" placeholder="Type a message" [(ngModel)]="text">
+        <img src="../../assets/images/camera-icon.jpg" alt="" class="typing-box__icon camera" [ngClass]="{'camera--right': text}" >
+        <img src="../../assets/images/attachment-icon.png" alt="" class="typing-box__icon attachment" [ngClass]="{'attachment--right': text}">
+    </div> -->
+
+
+

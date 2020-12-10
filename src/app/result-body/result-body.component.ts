@@ -25,11 +25,15 @@ titleExists = false;
 switch = false;
 successfulAddition = false;
 isFaveMarked = true;
+openAccordion = false;
+text = '';
 ngOnInit() {
   this.isFaveMarked = false;
   this.successfulAddition = false;
-  this.recentSearches = this.searchservices.recentSearches;
-  console.log('recent serches value', this.recentSearches);
+  this.recentSearches.length = 0;
+  this.recentSearches = this.searchservices.recentSearches.slice();
+  console.log('value of search services recent NG ON INIT', this.searchservices.recentSearches.slice());
+  // console.log('recent serches value', this.recentSearches);
   this.dataStorage.fetchAllMovies().subscribe(
     (movies: Movie) => {
       this.dataStorage.myFaves.length = 0;
@@ -67,14 +71,6 @@ getMovie(title) {
       if (this.movieObj.Poster === 'N/A' ) {
         this.movieObj.Poster = '/assets/images/no-img.png';
       }
-
-      // tslint:disable-next-line: no-shadowed-variable
-      this.titleExists = this.recentSearches.find(title => {
-        if (title === movie.Title) {
-        return true;
-        }
-        return false;
-      });
       if (this.isMovieFave(this.movieObj)) {
         this.isFaveMarked = true;
         this.movieObj.isFave = true;
@@ -85,7 +81,16 @@ getMovie(title) {
         this.movieObj.isFave = false;
         console.log('Fave status is ', this.isFaveMarked);
       }
-      this.searchservices.recentSearches.push(movie.Title);
+      if (!this.isMovieSearched(this.movieObj)) {
+        console.log('Movie was not searched earlier..Adding it to searches');
+        this.recentSearches.push(this.movieObj.Title);
+        this.searchservices.recentSearches.push(this.movieObj.Title);
+        console.log('value of search services recent', this.searchservices.recentSearches.slice());
+        console.log('value of isMovieSearhed fn', this.isMovieSearched(this.movieObj));
+      }
+      if (this.isMovieSearched(this.movieObj)) {
+        console.log('Movie was searched earlier..Cant Add it to Searches');
+      }
       } else {
         this.movieObj = null;
         this.isSearchValid = false ;
@@ -165,6 +170,26 @@ isMovieFave(movie) {
   }
   // console.log('is movie NOT present in array');
   return false;
+}
+
+isMovieSearched(movie) {
+  let isSearched = null;
+  isSearched = this.searchservices.recentSearches.filter(obj => {
+    if (obj.title === this.movieObj.Title) {
+    return obj.title;
+    }
+    return null;
+  });
+  if (isSearched.length && (isSearched[0].title === this.movieObj.Title)) {
+    // console.log('is movie already present in array');
+    return true;
+  }
+  // console.log('is movie NOT present in array');
+  return false;
+}
+
+open(){
+  this.openAccordion = true;
 }
 
 }
