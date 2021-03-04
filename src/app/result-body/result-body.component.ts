@@ -27,6 +27,8 @@ successfulAddition = false;
 isFaveMarked = true;
 openAccordion = false;
 text = '';
+
+
 ngOnInit() {
   this.isFaveMarked = false;
   this.successfulAddition = false;
@@ -197,3 +199,15 @@ open(){
     this.switch = !this.switch;
   }
 */
+/* timerDone = false;
+timerStopped = false;
+
+stopTimer(){
+  this.timerStopped = true;
+  this.timerDone = false;
+}
+
+doneTimer(){
+  this.timerDone = true;
+  this.timerStopped=false;
+} */
